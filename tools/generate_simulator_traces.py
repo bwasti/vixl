@@ -155,7 +155,7 @@ if __name__ == '__main__':
     master_trace_f.write('\n\n')
 
     # Find the AArch64 simulator tests.
-    tests = sorted(filter(lambda t: 'AARCH64_SIM_' in t, test_list.split()),
+    tests = sorted([t for t in test_list.split() if 'AARCH64_SIM_' in t],
                    key=lambda t: GetAArch64Filename(t))
 
     for test in tests:
@@ -164,7 +164,7 @@ if __name__ == '__main__':
       trace_filename = GetAArch64Filename(test_name)
       if not args.filter or re.compile(args.filter).search(test):
         # Run each test.
-        print 'Generating trace for ' + test;
+        print('Generating trace for ' + test);
         cmd = ' '.join([args.runner, '--generate_test_trace', test])
         status, output = util.getstatusoutput(cmd)
         if status != 0: util.abort('Failed to run ' + cmd + '.')
@@ -197,17 +197,15 @@ if __name__ == '__main__':
 
     # Find the AArch32 tests.
     tests = sorted(
-        filter(
-            lambda t: 'AARCH32_SIMULATOR_' in t or ('AARCH32_ASSEMBLER_' in t
-                and not 'AARCH32_ASSEMBLER_NEGATIVE_' in t),
-            test_list.split()),
+        [t for t in test_list.split() if 'AARCH32_SIMULATOR_' in t or ('AARCH32_ASSEMBLER_' in t
+                and not 'AARCH32_ASSEMBLER_NEGATIVE_' in t)],
         key=lambda t: GetAArch32Filename(t))
     if args.filter:
-      tests = filter(re.compile(args.filter).search, tests)
+      tests = list(filter(re.compile(args.filter).search, tests))
 
     for test in tests:
       # Run each test.
-      print 'Generating trace for ' + test;
+      print('Generating trace for ' + test);
       # Strip out 'AARCH32_' to get the name of the test.
       test_name = test[len('AARCH32_'):]
 
@@ -234,4 +232,4 @@ if __name__ == '__main__':
           '\n' + "#endif  // VIXL_" + test_name.upper() + "_H_" + '\n')
       trace_f.close()
 
-  print 'Trace generation COMPLETE'
+  print('Trace generation COMPLETE')

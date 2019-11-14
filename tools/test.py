@@ -256,8 +256,7 @@ def RunCommand(command, environment_options = None):
 
 
 def RunLinter(jobs):
-  return lint.RunLinter(map(lambda x: join(dir_root, x),
-                        util.get_source_files()),
+  return lint.RunLinter([join(dir_root, x) for x in util.get_source_files()],
                         jobs = args.jobs, progress_prefix = 'cpp lint: ')
 
 
@@ -346,7 +345,7 @@ def ListCombinations(**kwargs):
 # {a : a0, b : b0} --> "a=a0 b=b0"
 def DictToString(options):
   return " ".join(
-      ["{}={}".format(option, value) for option, value in options.items()])
+      ["{}={}".format(option, value) for option, value in list(options.items())])
 
 
 if __name__ == '__main__':
@@ -413,7 +412,7 @@ if __name__ == '__main__':
 
   for options in list_options:
     if (args.dry_run):
-      print(DictToString(options))
+      print((DictToString(options)))
       continue
     # Convert 'compiler' into an environment variable:
     environment_options = {'CXX': options['compiler']}

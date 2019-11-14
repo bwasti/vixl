@@ -37,12 +37,11 @@ import sys
 
 
 def ListCCFilesWithoutExt(path):
-  return map(lambda x : os.path.splitext(os.path.basename(x))[0],
-             glob.glob(os.path.join(path, '*.cc')))
+  return [os.path.splitext(os.path.basename(x))[0] for x in glob.glob(os.path.join(path, '*.cc'))]
 
 
 def abort(message):
-  print('ABORTING: ' + message)
+  print(('ABORTING: ' + message))
   sys.exit(1)
 
 
@@ -70,7 +69,7 @@ def ensure_dir(path_name):
 def require_program(program_name):
   rc, out = getstatusoutput('which %s' % program_name)
   if rc != 0:
-    print('ERROR: The required program %s was not found.' % program_name)
+    print(('ERROR: The required program %s was not found.' % program_name))
     sys.exit(rc)
 
 def relrealpath(path, start=os.getcwd()):
@@ -95,7 +94,7 @@ def GetCompilerDirectives(env):
     for match in [
       # Capture macro name.
       re.search('^#define (\S+?) (.+)$', macro)
-      for macro in out.split('\n')
+      for macro in out.decode().split('\n')
     ]
     # Filter out non-matches.
     if match

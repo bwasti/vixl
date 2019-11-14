@@ -775,9 +775,9 @@ def GenerateTest(generator, clang_format, skip_traces):
   if not skip_traces:
     # Write dummy trace files into 'test/aarch32/traces/'.
     generator.WriteEmptyTraces("test/aarch32/traces/")
-  print("Generated {} {} test for \"{}\".".format(generator.test_isa.upper(),
+  print(("Generated {} {} test for \"{}\".".format(generator.test_isa.upper(),
                                                   generator.test_type,
-                                                  generator.test_name))
+                                                  generator.test_name)))
 
 if __name__ == '__main__':
   args = BuildOptions()

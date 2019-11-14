@@ -51,6 +51,6 @@ def get_untracked_files():
 
   untracked_regexp = re.compile('\?\?.*(src/|test/|tools/).*(.cc$|.h$)')
   files_in_watched_folder = lambda n: untracked_regexp.search(n) != None
-  untracked_files = filter(files_in_watched_folder, output.split('\n'))
+  untracked_files = list(filter(files_in_watched_folder, output.split('\n')))
 
   return untracked_files

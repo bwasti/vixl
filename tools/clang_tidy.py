@@ -93,7 +93,7 @@ def FilterClangTidyLines(lines):
   return "\n".join(out)
 
 def FilterFiles(list_files):
-  return list(filter(lambda x: x.endswith('.cc'), list_files))
+  return list([x for x in list_files if x.endswith('.cc')])
 
 def RunTest(test):
   cmd = " ".join(test.args['command'])
@@ -139,7 +139,7 @@ def ClangTidyFiles(files, clang_tidy, jobs = 1, progress_prefix = ''):
                     .format(clang_tidy,
                             CLANG_TIDY_VERSION_MAJOR,
                             CLANG_TIDY_VERSION_MINOR)
-    print(printer.COLOUR_RED + error_message + printer.NO_COLOUR)
+    print((printer.COLOUR_RED + error_message + printer.NO_COLOUR))
     return -1
 
   opts = ['--', '-DVIXL_INCLUDE_TARGET_AARCH64', '-DVIXL_CODE_BUFFER_MALLOC',

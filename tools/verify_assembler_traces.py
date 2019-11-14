@@ -370,7 +370,7 @@ def VerifyInstructionsWithLLVMMC(llvm_mc, f, triple):
   """
 
   vixl_reference = ReadTrace(f.read())
-  vixl_instructions, vixl_encodings = zip(*vixl_reference)
+  vixl_instructions, vixl_encodings = list(zip(*vixl_reference))
   instructions = [
       ConvertToLLVMFormat(instruction, triple)
       for instruction in vixl_instructions
@@ -384,7 +384,7 @@ def VerifyInstructionsWithLLVMMC(llvm_mc, f, triple):
   out, err = llvm_mc_proc.communicate("\n".join(instructions).encode())
   # If `llvm-mc` printed something to stderr then stop.
   if err:
-    print(err.decode())
+    print((err.decode()))
     return
 
   # Extract list of bytes from `llvm-mc` output. It's in the following form:
@@ -410,18 +410,18 @@ def VerifyInstructionsWithLLVMMC(llvm_mc, f, triple):
 
   # Check the encodings from LLVM are identical to VIXL's.
   if len(llvm_encodings) != len(vixl_encodings):
-    print("""Error: llvm-mc generated {} instructions than there are in the
+    print(("""Error: llvm-mc generated {} instructions than there are in the
 generated trace.
-        """.format("fewer" if len(llvm_encodings) < len(vixl_encodings) else "more"))
+        """.format("fewer" if len(llvm_encodings) < len(vixl_encodings) else "more")))
   else:
     for i in range(0, len(vixl_encodings)):
       if llvm_encodings[i] != vixl_encodings[i]:
-        print("""Error: llvm-mc disagrees on the encoding of \"{instruction}\":
+        print(("""Error: llvm-mc disagrees on the encoding of \"{instruction}\":
   LLVM-MC: {llvm}
   VIXL:    {vixl}
             """.format(instruction=vixl_instructions[i].replace("\n", "; "),
                        llvm=llvm_encodings[i],
-                       vixl=vixl_encodings[i]))
+                       vixl=vixl_encodings[i])))
 
 
 if __name__ == "__main__":
@@ -438,7 +438,7 @@ if __name__ == "__main__":
   trace_files.sort()
   for trace_file in trace_files:
     if args.verbose:
-      print("Verifying \"" + trace_file + "\".")
+      print(("Verifying \"" + trace_file + "\"."))
     with open(os.path.join(trace_dir, trace_file), "r") as f:
       if "t32" in trace_file:
         VerifyInstructionsWithLLVMMC(args.llvm_mc, f, "thumbv8")

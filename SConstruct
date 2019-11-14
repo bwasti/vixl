@@ -60,9 +60,9 @@ class VIXLTargets:
     for i in range(len(self.targets)):
       res += '\t{0:<{1}}{2:<{3}}\n'.format(
         'scons ' + self.targets[i],
-        len('scons ') + max(map(len, self.targets)),
+        len('scons ') + max(list(map(len, self.targets))),
         ' : ' + self.help_messages[i],
-        len(' : ') + max(map(len, self.help_messages)))
+        len(' : ') + max(list(map(len, self.help_messages))))
     return res
 
 top_level_targets = VIXLTargets()
@@ -332,18 +332,18 @@ def ProcessBuildOptions(env):
   env_dict = env.Dictionary()
 
   # First apply the default variables handlers in order.
-  for key, value in vars_default_handlers.items():
+  for key, value in list(vars_default_handlers.items()):
     default = value[0]
     handler = value[1]
     if env_dict.get(key) == default:
       handler(env_dict)
 
   # Second, run the series of validators, to check for errors.
-  for _, value in vars_default_handlers.items():
+  for _, value in list(vars_default_handlers.items()):
     validator = value[2]
     validator(env)
 
-  for key in env_dict.keys():
+  for key in list(env_dict.keys()):
     # Then update the environment according to the value of the variable.
     key_val_couple = key + ':%s' % env_dict[key]
     if key_val_couple in options:
@@ -459,11 +459,11 @@ env = Environment(variables = vars,
 # Abort the build if any command line option is unknown or invalid.
 unknown_build_options = vars.UnknownVariables()
 if unknown_build_options:
-  print 'Unknown build options:',  unknown_build_options.keys()
+  print('Unknown build options:',  list(unknown_build_options.keys()))
   Exit(1)
 
 if env['negative_testing'] == 'on' and env['mode'] != 'debug':
-  print 'negative_testing only works in debug mode'
+  print('negative_testing only works in debug mode')
   Exit(1)
 
 ConfigureEnvironment(env)

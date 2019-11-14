@@ -92,7 +92,7 @@ class TestQueue(object):
                            prefix = self.progress_prefix)
     n_tests_features = 0
     features = set()
-    for reason, n_tests in self.tests_skipped.items():
+    for reason, n_tests in list(self.tests_skipped.items()):
       m = re.match(REGEXP_MISSING_FEATURES, reason)
       if m:
         if verbose:
@@ -110,7 +110,7 @@ class TestQueue(object):
                     "the following features: '%s'" %
                     (n_tests_features, ", ".join(features)))
 
-    for reason, n_tests in self.known_failures.items():
+    for reason, n_tests in list(self.known_failures.items()):
         printer.Print("%d tests skipped because '%s'" % (n_tests, reason))
 
     # Empty the queue now that the tests have been run.

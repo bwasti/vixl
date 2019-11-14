@@ -40,7 +40,7 @@ def GetTests(runner, filters = []):
 
   tests = output.split()
   for f in filters:
-    tests = filter(re.compile(f).search, tests)
+    tests = list(filter(re.compile(f).search, tests))
 
   return tests
 

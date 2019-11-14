@@ -157,7 +157,7 @@ def ClangFormatFiles(files, clang_format, in_place = False, jobs = 1,
                     .format(clang_format,
                             CLANG_FORMAT_VERSION_MAJOR,
                             CLANG_FORMAT_VERSION_MINOR)
-    print(printer.COLOUR_RED + error_message + printer.NO_COLOUR)
+    print((printer.COLOUR_RED + error_message + printer.NO_COLOUR))
     return -1
 
   queue = TestQueue(prefix = progress_prefix)
